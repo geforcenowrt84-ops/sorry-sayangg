@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="heart.png" type="image/x-icon">
+    <title>coba senyum dulu :)</title>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        @font-face {
+            font-family: 'PP Neue Corp';
+            src: url('https://cdn.prod.website-files.com/6717aac16c9ea22eeef1e79e/6717de2d56e40b921572d2d9_PPNeueCorp-TightUltrabold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('https://cdn.prod.website-files.com/6819ed8312518f61b84824df/6819ed8312518f61b84825ba_PPNeueMontreal-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --pink: #ff6aa2;
+            --pink-2: #ffc8dd;
+            --pink-3: #ffe3ef;
+            --text: #702040;
+            --radius: 14px;
+            --bgsize: .38rem;
+            --card-h: 640px;
+            --accent: var(--pink);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            overflow: hidden;
+
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            justify-items: center;
+
+            gap: 20px;
+
+            --edge-pad: clamp(18px, 6vw, 32px);
+            padding: clamp(10px, 2.6vh, 24px) var(--edge-pad);
+
+            background: #fff7fb;
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--text);
+        }
+
+        .box {
+            position: relative;
+            width: min(100%, 980px);
+            height: var(--card-h);
+            background: #fff;
+            padding: 44px 36px 64px;
+            border: 2px solid var(--pink);
+            border-radius: var(--radius);
+            box-shadow: 0 18px 50px rgba(255, 106, 162, .25);
+            /* overflow: visible PENTING agar foto bisa "keluar" */
+            overflow: visible;
+            display: flex;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                --edge-pad: clamp(24px, 8vw, 40px);
+            }
+
+            :root {
+                /* Lebih tinggi lagi di HP */
+                --card-h: 580px;
+            }
+        }
+
+        .box::after {
+            content: "";
+            position: absolute;
+            z-index: -2;
+            top: .75rem;
+            left: .75rem;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius);
+            background-image: linear-gradient(45deg,
+                    #fff 33.33%,
+                    rgba(255, 106, 162, .35) 33.33%,
+                    rgba(255, 106, 162, .35) 50%,
+                    #fff 50%,
+                    #fff 83.33%,
+                    rgba(255, 106, 162, .35) 83.33%,
+                    rgba(255, 106, 162, .35) 100%);
+            background-size: var(--bgsize);
+        }
+
+        /* Ensure SVG butterfly uses the accent color */
+        svg path {
+            fill: var(--accent) !important;
+        }
+
+        /* ====================================================== */
+        /* ================== CSS BARU UNTUK KONTEN ============= */
+        /* ====================================================== */
+
+        #content {
+            position: relative;
+            overflow: visible;
+            /* Biarkan overflow terlihat */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            /* Mulai dari atas */
+            gap: 0;
+            /* Hapus gap lama */
+            width: 100%;
+            max-width: 860px;
+            padding-top: 0;
+        }
+
+        .image-gallery {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            /* Trik kuncinya: Tarik galeri ke ATAS agar keluar dari box */
+            transform: translateY(-90px);
+            /* Tarik video di bawahnya agar lebih rapat */
+            margin-bottom: -60px;
+            z-index: 10;
+        }
+
+        .polaroid-image {
+            position: relative;
+            width: 180px;
+            /* Ukuran foto polaroid */
+            padding: 10px 10px 20px 10px;
+            background: #fff;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .polaroid-image:hover {
+            transform: scale(1.15) rotate(0deg) translateY(-10px) !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+        }
+
+        .polaroid-image img {
+            width: 100%;
+            height: 170px;
+            /* Ukuran area gambar */
+            object-fit: cover;
+            display: block;
+            background: #f9f9f9;
+        }
+
+        #img1 {
+            transform: rotate(-15deg) translateX(20px);
+        }
+
+        #img2 {
+            transform: rotate(2deg) translateY(-15px);
+            z-index: 12;
+        }
+
+        #img3 {
+            transform: rotate(12deg) translateX(-20px);
+        }
+
+        /* Container untuk video (PENGGANTI .apology-text) */
+        .video-container {
+            position: relative;
+            z-index: 5;
+            /* Di belakang polaroid */
+            width: 100%;
+            max-width: 540px;
+            /* Lebar video */
+            aspect-ratio: 16 / 9;
+            background: #fceef5;
+            /* Warna bg saat video loading */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ====================================================== */
+        /* ============ CSS BARU UNTUK TEKS ANIMASI ============= */
+        /* ====================================================== */
+
+        .animated-text-container {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 540px;
+            /* Samakan dengan video */
+            margin-top: 24px;
+            /* Jarak dari video */
+            /* Beri ruang untuk 2 baris teks */
+            height: 60px;
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+            line-height: 1.6;
+            color: var(--text);
+            text-align: center;
+        }
+
+        .animated-text-container .text-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            width: 100%;
+            font-size: 24px;
+            font-weight: 500;
+            opacity: 0;
+            /* Sembunyi by default */
+            /* Animasi masuk dan keluar */
+            animation-duration: 0.8s;
+            animation-fill-mode: forwards;
+            /* Tahan state di akhir */
+            animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .animated-text-container .text-line.is-visible {
+            animation-name: fadeInUp;
+        }
+
+        .animated-text-container .text-line.is-hidden {
+            animation-name: fadeOutUp;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOutUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+
+        /* ====================================================== */
+        /* ============= CSS BARU UNTUK LIGHTBOX FOTO =========== */
+        /* ====================================================== */
+
+        #lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 20000;
+            background: rgba(29, 14, 22, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            /* Tidak bisa diklik saat sembunyi */
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+            /* Bisa diklik saat muncul */
+        }
+
+        #lightbox-image {
+            display: block;
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close-text {
+            position: absolute;
+            bottom: 3vh;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
+
+
+        @media (max-width: 480px) {
+            :root {
+                --card-h: 480px;
+            }
+
+            .image-gallery {
+                transform: translateY(-70px);
+                margin-bottom: -50px;
+            }
+
+            .polaroid-image {
+                width: 90px;
+                padding: 8px 8px 15px 8px;
+            }
+
+            .polaroid-image img {
+                height: 80px;
+            }
+
+            #img1 {
+                transform: rotate(-15deg) translateX(15px);
+            }
+
+            #img3 {
+                transform: rotate(12deg) translateX(-15px);
+            }
+
+            .animated-text-container {
+                height: 80px;
+                /* Beri ruang lebih di HP */
+
+            }
+        }
+
+
+        /* ====================================================== */
+        /* ============ CSS BAWAAN (PLAYER, DLL) ================ */
+        /* ====================================================== */
+
+        /* ... (CSS untuk player, butterfly, intro, footer tetap sama persis) ... */
+
+        /* Mini player */
+        #player-card {
+            width: min(92vw, 520px);
+            background: #fff;
+            border: 2px solid var(--pink);
+            border-radius: var(--radius);
+            box-shadow: 0 10px 28px rgba(255, 106, 162, .2);
+            padding: 16px 18px 20px;
+            text-align: center;
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
+
+        #player-title {
+            margin: 0 0 10px;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .controls button {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 2px solid var(--pink);
+            background: var(--pink-3);
+            font-weight: 700;
+            cursor: pointer;
+            min-width: 100px;
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
+
+        .controls button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        /* Intro Overlay */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background:
+                radial-gradient(60% 80% at 30% 20%, rgba(255, 182, 193, 0.55), rgba(255, 255, 255, 0.65) 50%),
+                linear-gradient(135deg, rgba(255, 192, 203, 0.55), rgba(255, 255, 255, 0.85));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: opacity .6s ease;
+            cursor: pointer;
+        }
+
+        #intro-overlay.intro-hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-content {
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            color: #1a1a1a;
+            user-select: none;
+        }
+
+        .intro-title {
+            font-weight: 700;
+            letter-spacing: .02em;
+            margin: 0 0 .35em 0;
+            font-size: clamp(28px, 7vw, 72px);
+        }
+
+        .intro-sub {
+            font-weight: 500;
+            opacity: .85;
+            font-size: clamp(14px, 2.6vw, 22px);
+        }
+
+        /* Butterfly */
+        @keyframes flutter {
+            from {
+                transform: rotateX(0);
+            }
+
+            to {
+                transform: rotateX(80deg);
+            }
+        }
+
+        #butterfly-hero {
+            position: relative;
+            z-index: 5;
+        }
+
+        .butterfly {
+            background: none;
+            color: hotpink;
+        }
+
+        path {
+            fill: currentcolor;
+        }
+
+        .butterfly__wing {
+            transform-origin: center center;
+            animation: flutter 150ms alternate infinite;
+        }
+
+        .butterfly-container {
+            --RADIUS-ANIMATION-ANGLE: var(--PI);
+            --r-min: 2;
+            --r-max: 10;
+            --delta-r: calc(var(--r-max) - var(--r-min));
+            --gamma-reference-angle: calc(var(--progress) * var(--RADIUS-ANIMATION-ANGLE));
+            --r: calc(var(--r-min) + var(--delta-r) * sin(var(--gamma-reference-angle)));
+        }
+
+        @property --progress {
+            initial-value: 0;
+            inherits: false;
+            syntax: '<number>';
+        }
+
+        @keyframes progress {
+            from {
+                --progress: 0;
+            }
+
+            to {
+                --progress: 1;
+            }
+        }
+
+        .shape-container {
+            --PI: 3.1415;
+            --WAVE-COUNT: 2;
+            --TOTAL-ANGLE: calc(var(--WAVE-COUNT) * 2 * var(--PI));
+            --UNIT: 1vw;
+            --r: 4;
+            --CONTAINER-WIDTH: 100;
+            --x: calc(var(--progress) * var(--CONTAINER-WIDTH));
+            --ROTATION-PER-LENGTH-UNIT: calc(var(--TOTAL-ANGLE) / var(--CONTAINER-WIDTH));
+            --alpha-reference-angle: calc(var(--ROTATION-PER-LENGTH-UNIT) * var(--x) * 1rad);
+            --y: calc(-1 * var(--r) * sin(var(--alpha-reference-angle)));
+            --x-with-unit: calc(var(--x) * var(--UNIT));
+            --y-with-unit: calc(var(--y) * var(--UNIT));
+            --tan: calc(var(--r) * var(--ROTATION-PER-LENGTH-UNIT) * cos(var(--alpha-reference-angle)));
+            --beta-tangent-angle: atan(var(--tan));
+
+            position: fixed;
+            top: clamp(12px, 5vh, 56px);
+            left: 0;
+            z-index: 6;
+            width: calc(var(--CONTAINER-WIDTH) * var(--UNIT));
+            animation: progress 3s linear infinite;
+        }
+
+        .shape {
+            --shape-width: 50px;
+            --shape-height: 10px;
+            position: absolute;
+            z-index: 7;
+            top: calc(-0.5 * var(--shape-height));
+            left: calc(-0.5 * var(--shape-width));
+            width: var(--shape-width);
+            height: var(--shape-height);
+            translate: var(--x-with-unit) var(--y-with-unit);
+            rotate: var(--beta-tangent-angle);
+        }
+
+        @media (max-width: 600px) {
+            .shape-container {
+                top: clamp(8px, 4vh, 40px);
+            }
+
+            .shape {
+                --shape-width: 44px;
+            }
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            font-family: 'PP Neue Montreal', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            font-size: .95rem;
+            color: #7a4563;
+            opacity: .9;
+        }
+
+        .site-footer .heart {
+            color: #ff4d93;
+            display: inline-block;
+            transform-origin: center;
+            animation: heart-beat 1.4s ease-in-out infinite;
+        }
+
+        @keyframes heart-beat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .site-footer .heart {
+                animation: none;
+            }
+        }
+
+        #butterfly-hero {
+            align-self: start;
+        }
+
+        #card {
+            place-self: center;
+        }
+
+        #player-card,
+        .site-footer {
+            align-self: end;
+        }
+
+        /* Cylinder UI styles (copied from index1.html) */
+        .cylinder-container {
+            perspective: 1200px;
+            width: 90vw;
+            max-width: 420px;
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px auto;
+            /* center horizontally and add breathing space */
+        }
+
+        /* Block that holds cylinder and controls and centers them vertically */
+        .cylinder-block {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            /* slightly smaller so the visible stack sits a bit higher on smaller viewports */
+            min-height: 30vh;
+            /* keeps the block vertically centered-ish */
+            box-sizing: border-box;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        /* The section that contains the main content (apology + cylinder). 
+           Make it fill the grid row and center its children vertically so the
+           cylinder appears in the middle of the page area. */
+        .main-section {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            box-sizing: border-box;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            /* center the content block horizontally and match content width */
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        /* Apology text above the cylinder - keep it readable and separated */
+        .apology-text {
+            width: 100%;
+            max-width: 920px;
+            text-align: center;
+            color: var(--text);
+            padding: 0 12px;
+            margin-bottom: 6vh; /* push cylinder down to avoid overlap */
+            line-height: 1.45;
+            /* slightly larger and more responsive */
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            position: relative;
+            z-index: 40;
+        }
+
+        @media (max-width: 600px) {
+            .apology-text { margin-bottom: 18vh; font-size: 1.08rem; }
+        }
+
+        .cylinder {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(.4, 2, .6, 1);
+            transform-origin: center;
+            animation: wobble 6s ease-in-out infinite;
+        }
+
+        .sentence {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            /* allow sentence to size to its content and avoid wrapping */
+            max-width: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1rem;
+            font-size: 1.25em;
+            background: linear-gradient(90deg, rgba(255, 182, 213, 0.14) 0%, rgba(255, 182, 213, 0.06) 50%, rgba(182, 234, 255, 0.06) 100%);
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+            transition: transform 420ms cubic-bezier(.4, 2, .6, 1), opacity 300ms ease, box-shadow 300ms ease;
+            user-select: none;
+            white-space: nowrap; /* prefer single-line when it fits */
+            /* don't allow the pill to grow outside its container; keep padding in box-sizing */
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
+            word-break: normal;
+            backface-visibility: hidden;
+            text-align: center;
+        }
+
+        .sentence.active {
+            background: linear-gradient(90deg, #ffe6f3 0%, #ffb6d5 50%, #b6eaff 100%);
+            color: #2a0010;
+            font-weight: 700;
+            font-size: 1.35em;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 2px 12px rgba(255, 182, 213, 0.18);
+            z-index: 999;
+            animation: activeGlow 2s ease-in-out infinite;
+        }
+
+        .cylinder-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            background: radial-gradient(120px 60px at 50% 45%, rgba(255, 182, 213, 0.06), transparent 40%);
+        }
+
+        @keyframes wobble {
+            0% {
+                transform: rotateX(-3deg);
+            }
+
+            50% {
+                transform: rotateX(3deg);
+            }
+
+            100% {
+                transform: rotateX(-3deg);
+            }
+        }
+
+        @keyframes activeGlow {
+            0% {
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 2px 12px rgba(255, 182, 213, 0.18);
+            }
+
+            50% {
+                box-shadow: 0 18px 48px rgba(255, 182, 213, 0.28), 0 4px 18px rgba(255, 182, 213, 0.12);
+            }
+
+            100% {
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 2px 12px rgba(255, 182, 213, 0.18);
+            }
+        }
+
+        .controls-bottom {
+            /* flow with document so it sits above the player */
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem 0;
+            margin: 0 auto;
+            /* only horizontal centering */
+            gap: 1rem;
+            z-index: 30;
+            width: auto;
+        }
+
+        @media (max-width: 420px) {
+            .controls-bottom {
+                gap: 1rem;
+                padding: 0.5rem 0;
+            }
+
+            .controls-bottom button {
+                width: 44px;
+                height: 44px;
+                font-size: 1.6em;
+            }
+
+            .cylinder-container {
+                margin: 24px auto;
+            }
+        }
+
+        .controls-bottom button {
+            font-size: 1.6em;
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            border: none;
+            background: #ffb6d5;
+            color: #2a0010;
+            font-weight: bold;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            transition: background 0.15s, transform 0.08s;
+            display: inline-grid;
+            place-items: center;
+        }
+
+        .controls-bottom button:active {
+            background: #e07ca7;
+            transform: scale(0.93);
+        }
+
+        @media (max-width: 600px) {
+            .cylinder-container {
+                height: 180px;
+                margin: 18px auto;
+            }
+            .cylinder-block { min-height: 22vh; }
+
+            .sentence {
+                font-size: 1.05em;
+                height: auto;
+                /* On small screens allow wrapping if the sentence is wider than the viewport.
+                   Keep it centered and constrain to viewport width so long lines break into
+                   readable multiple lines instead of overflowing off-screen. */
+                white-space: normal;
+                max-width: calc(92vw - 24px);
+                word-break: break-word;
+            }
+
+            .sentence.active {
+                font-size: 1.15em;
+            }
+
+            .controls-bottom button {
+                width: 48px;
+                height: 48px;
+                font-size: 1.35em;
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section id="butterfly-hero" aria-label="Butterfly hero">
+        <div class="shape-container butterfly-container">
+            <div class="shape butterfly">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 200" width="50">
+                    <style>
+                        path {
+                            fill: hotpink;
+                        }
+                    </style>
+                    <g class="butterfly__wing">
+                        <path
+                            d="M75.13 100s59.42 41.22 56.79 82.78c-.77 12.12-6.14 19.32-23.41 16.67C59.79 191.97 55.75 131.44 64 100h11.13Z" />
+                        <path
+                            d="M68.22 100c1.15 19.13-4.22 72.17-29.35 70.47-23.04-1.56-40.43-16.38-38.76-28.04 2.69-18.75 39.33-41.3 47.58-42.43h20.53Z" />
+                    </g>
+                    <g class="butterfly__wing">
+                        <path id="bfy-wing-2a"
+                            d="M75.13 100s59.42-41.22 56.79-82.78C131.15 5.1 125.78-2.1 108.51.55 59.79 8.03 55.75 68.56 64 100h11.13Z" />
+                        <path id="bfy-wing-2b"
+                            d="M68.22 100C69.37 80.87 64 27.83 38.87 29.53 15.83 31.09-1.56 45.91.11 57.57 2.8 76.32 39.44 98.87 47.69 100h20.53Z" />
+                    </g>
+                    <g class="butterfly__body">
+                        <path
+                            d="M82.59 102.81a4.806 4.806 0 0 0 3.85 1.92c2.65 0 4.8-2.12 4.8-4.74s-2.15-4.74-4.8-4.74c-1.58 0-2.98.76-3.85 1.92-2.69-1.17-7.01-1.92-11.88-1.92-3.19 0-6.15.33-8.56.88-2.42-.55-5.37-.88-8.56-.88-4.22 0-8.03.57-10.72 1.48-2.69-.91-6.5-1.48-10.72-1.48-8.16 0-14.77 2.12-14.77 4.74s6.61 4.74 14.77 4.74c4.22 0 8.03-.57 10.72-1.48 2.69.91 6.5 1.48 10.72 1.48 3.19 0 6.15-.33 8.56-.88 2.42.55 5.37.88 8.56.88 4.87 0 9.19-.76 11.88-1.92Z" />
+                        <path
+                            d="M89.97 101.73s0-.1.01-.15c.08-.51.56-.85 1.08-.77 12.36 1.97 28.14 10.97 33.05 23.76a.933.933 0 0 1-.55 1.2.94.94 0 0 1-1.21-.54c-4.66-12.14-19.75-20.7-31.59-22.59a.931.931 0 0 1-.79-.91Z" />
+                        <path
+                            d="M89.97 98.27s0 .1.01.15c.08.51.56.85 1.08.77 12.36-1.97 28.14-10.97 33.05-23.76a.933.933 0 0 0-.55-1.2.94.94 0 0 0-1.21.54c-4.66 12.14-19.75 20.7-31.59 22.59-.46.07-.79.47-.79.91Z" />
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section class="main-section">
+        <div class="apology-text">
+            jangan marahh lagi ya sayangg yaa, uwaa mintaa maaf dari hatii uwa, uwaa sayangg sunnyy, uwa pengen main sama sunnyy, besok uwaaa streaam kayak sunny mauuu okayyy???
+        </div>
+        <div id="content">
+            <!-- Replaced animated text with cylinder UI -->
+            <div class="cylinder-block">
+                <div class="cylinder-container">
+                    <div class="cylinder" id="cylinder"></div>
+                </div>
+                <div class="controls-bottom">
+                    <button id="prevBtn">▲</button>
+                    <button id="nextBtn">▼</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section id="player-card" aria-label="Pemutar musik">
+        <p id="player-title">sparkle</p>
+        <div class="controls">
+            <button id="play-btn">Play</button>
+            <button id="pause-btn" disabled>Pause</button>
+        </div>
+        <audio id="audio" preload="none">
+            <source src="sparkle.mp3" type="audio/mpeg">
+        </audio>
+    </section>
+
+    <div id="intro-overlay" tabindex="0">
+        <div class="intro-content">
+            <div class="intro-title">Good Nightt Sunnyyy Sayanggg</div>
+            <div class="intro-title">Mana senyumnyaaa yang manis ituu?</div>
+            <div class="intro-sub">Click Anywhere</div>
+        </div>
+    </div>
+
+    <footer class="site-footer" aria-label="Footer">
+        made with <span class="heart" aria-hidden="true">♥</span> by Mikhael
+    </footer>
+
+    <div id="lightbox-overlay">
+        <img src="" alt="Tampilan Penuh" id="lightbox-image">
+        <div class="lightbox-close-text">Klik di mana saja untuk menutup</div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <script>
+        // apply stored accent color (if any) so butterfly and player match the cylinder page
+        try {
+            const storedAccent = localStorage.getItem('accent');
+            if (storedAccent) document.documentElement.style.setProperty('--accent', storedAccent);
+        } catch (e) { }
+
+        // =============================================
+        // =========== KUMPULAN ELEMEN (DIUBAH) ========
+        // =============================================
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+
+        // Elemen baru
+        const video = document.querySelector('#content video');
+        const lightbox = document.getElementById('lightbox-overlay');
+        const lightboxImg = document.getElementById('lightbox-image');
+        const polaroids = document.querySelectorAll('.polaroid-image');
+        // =============================================
+
+        // --- Logic untuk Kontrol Play/Pause (SAMA) ---
+        function playAll() {
+            audio.play();
+            playBtn.disabled = true;
+            pauseBtn.disabled = false;
+        }
+
+        function pauseAll() {
+            audio.pause();
+            playBtn.disabled = false;
+            pauseBtn.disabled = true;
+        }
+
+        playBtn.addEventListener('click', playAll); // Update listener
+        pauseBtn.addEventListener('click', pauseAll); // Update listener
+
+        // --- Logic untuk Intro Overlay (SAMA) ---
+        function startFromOverlay() {
+            const overlay = $("#intro-overlay");
+            overlay.addClass("intro-hide");
+            setTimeout(() => overlay.remove(), 650);
+            $("#play-btn").trigger("click");
+            audio.play();
+        }
+        $("#intro-overlay").on("click", startFromOverlay);
+        $(document).on("keydown", function (e) {
+            if ($("#intro-overlay").length && (e.key === "Enter" || e.key === " ")) {
+                e.preventDefault();
+                startFromOverlay();
+            }
+        });
+
+        // --- Logic Lightbox (SAMA) ---
+        polaroids.forEach(polaroid => {
+            polaroid.addEventListener('click', () => {
+                const imgSrc = polaroid.querySelector('img').src;
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('show');
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('show');
+        });
+
+        // --- Logic Animasi Transisi Konten (DIUBAH) ---
+        const content = document.getElementById('content');
+
+        function getAnimatableItems() {
+            const images = Array.from(content.querySelectorAll('.polaroid-image'));
+            const videoContainer = content.querySelector('.video-container');
+            const textContainer = content.querySelector('.animated-text-container'); // BARU
+
+            let items = [];
+            if (images.length) items.push(...images);
+            if (videoContainer) items.push(videoContainer);
+            if (textContainer) items.push(textContainer); // BARU
+            return items;
+        }
+
+        function animateIn() {
+            const items = getAnimatableItems();
+            if (!items.length) return;
+
+            anime.set(items, { opacity: 0 });
+            anime.set(content.querySelectorAll('.polaroid-image'), { translateY: 40, opacity: 0 });
+            anime.set(content.querySelector('.video-container'), { translateY: 20, opacity: 0 });
+            anime.set(content.querySelector('.animated-text-container'), { translateY: 20, opacity: 0 }); // BARU
+
+            anime({
+                targets: content.querySelectorAll('.polaroid-image'),
+                translateY: 0,
+                opacity: 1,
+                duration: 800,
+                easing: 'easeOutCubic',
+                delay: anime.stagger(150, { start: 200 })
+            });
+
+            anime({
+                targets: content.querySelector('.video-container'),
+                translateY: 0,
+                opacity: 1,
+                duration: 700,
+                easing: 'easeOutCubic',
+                delay: 600
+            });
+
+            // BARU: Animasikan container teks
+            anime({
+                targets: content.querySelector('.animated-text-container'),
+                translateY: 0,
+                opacity: 1,
+                duration: 700,
+                easing: 'easeOutCubic',
+                delay: 800 // Muncul setelah video
+            });
+        }
+
+        // =================================================
+        // =========== LOGIC BARU UNTUK TEKS LOOP ==========
+        // =================================================
+        function startTextLoop() {
+            const textLines = document.querySelectorAll('.animated-text-container .text-line');
+            if (!textLines.length) return; // Keluar jika tidak ada teks
+
+            let currentLineIndex = 0;
+
+            // Fungsi untuk mengganti line
+            function cycleLines() {
+                const oldIndex = currentLineIndex;
+
+                // Tentukan index baru, lalu loop
+                currentLineIndex = (currentLineIndex + 1) % textLines.length;
+
+                // Sembunyikan line lama
+                if (textLines[oldIndex]) {
+                    textLines[oldIndex].classList.remove('is-visible');
+                    textLines[oldIndex].classList.add('is-hidden');
+                }
+
+                // Tampilkan line baru
+                // Hapus class 'is-hidden' (jika ada dari loop sebelumnya)
+                if (textLines[currentLineIndex]) {
+                    textLines[currentLineIndex].classList.remove('is-hidden');
+                    textLines[currentLineIndex].classList.add('is-visible');
+                }
+            }
+
+            // Tampilkan line pertama saat fungsi dipanggil
+            if (textLines[0]) {
+                textLines[0].classList.add('is-visible');
+            }
+
+            // Mulai interval (loop)
+            setInterval(cycleLines, 2800); // Ganti setiap 4 detik
+        }
+        // =================================================
+        // ============ AKHIR LOGIC TEKS LOOP ==============
+        // =================================================
+
+        // --- Pemanggilan Fungsi (DIUBAH) ---
+        $(document).one("click keydown", () => {
+            setTimeout(animateIn, 100);
+
+            // Mulai loop teks SETELAH animasi intro container-nya selesai
+            // (animasi text container punya delay 800ms + durasi 700ms = 1500ms)
+            // Kita beri sedikit buffer, misal 1700ms (1.7 detik)
+            setTimeout(startTextLoop, 1700);
+
+            // Cylinder UI script (IIFE to avoid globals)
+            (function () {
+                const sentences = [
+                    "Sunny bebyraaa",
+                    "I am in LOVE with you",
+                    "even our age gap is a little big",
+                    "19+21 is 40",
+                    "So here are 40 reasons why I love you",
+                    "I love your appreciation of what I am doing",
+                    "I love your laugh",
+                    "I love how you respect me",
+                    "I love when you call me uwaa sayangg",
+                    "I love how you trust me",
+                    "I love how beautiful you are",
+                    "I love when you talk about me to others",
+                    "I love how patient you are with me",
+                    "I love how you make me laugh",
+                    "I love how you make me feel special",
+                    "I love how you make me feel comfortable",
+                    "I love how you make me feel confident",
+                    "I love when you listen to me yapping",
+                    "I love your heart",
+                    "I love how you make me salting wkwkwk",
+                    "I love your advice",
+                    "I love your silence",
+                    "I love when you text me",
+                    "I love how you encourage me to do things",
+                    "I love your voice",
+                    "I love that you're waiting for me",
+                    "I love how you make me feel close even when you're far",
+                    "I love when you get jealous",
+                    "I love how you understand me even when I'm typoo",
+                    "I love how you remember the little things I say the bad and the good wkwkwkwk",
+                    "I love how you talk when I'm sleepy",
+                    "I love when you call me and wake me up just for me to shutdown my pc",
+                    "I love how you support me",
+                    "I love when you call me sayangg, cintakuu",
+                    "I love when you told me what to do when play hsr",
+                    "I love you when you came to my dreams",
+                    "I love how you make me look forward to the future",
+                    "I love when you laugh at my jokes",
+                    "I love that you're mine",
+                    "I love your soul",
+                    "I love when you ask me sayang sunny ga?",
+                    "I love when you sighs kwkwwkwk",
+                    "I love how you love me",
+                    "I love you more than anything",
+                    "I love you in all that you are and will be in the future"
+                ];
+
+                const cylinder = document.getElementById('cylinder');
+                if (!cylinder) return;
+                let activeIdx = 0;
+                const itemCount = sentences.length;
+                const radius = 90; // visual depth scale
+
+                function renderCylinder() {
+                    const angleStep = 12; // degrees per item (visual spacing)
+                    const visibleRange = 6; // how many items up/down to show
+
+                    const existing = {};
+                    Array.from(cylinder.children).forEach(el => {
+                        if (el.dataset && typeof el.dataset.idx !== 'undefined') existing[el.dataset.idx] = el;
+                    });
+
+                    const keep = new Set();
+                    for (let i = 0; i < itemCount; i++) {
+                        let raw = i - activeIdx;
+                        if (raw > itemCount / 2) raw -= itemCount;
+                        if (raw < -itemCount / 2) raw += itemCount;
+                        if (Math.abs(raw) > visibleRange) continue;
+
+                        const angle = raw * angleStep;
+                        const y = raw * 28;
+                        const z = Math.abs(raw) * 46;
+                        const scale = Math.max(0.7, 1 - Math.abs(raw) * 0.08);
+                        const opacity = Math.max(0.2, 1 - Math.abs(raw) * 0.14);
+
+                        let div = existing[i];
+                        if (!div) {
+                            div = document.createElement('div');
+                            div.className = 'sentence';
+                            div.dataset.idx = i;
+                            cylinder.appendChild(div);
+                        }
+                        keep.add(String(i));
+
+                        div.textContent = `${i + 1}. ${sentences[i]}`;
+                        div.style.transform = `translateX(-50%) translateY(${y}px) translateZ(${-z}px) scale(${scale}) rotateX(${angle}deg)`;
+                        div.style.opacity = opacity;
+                        div.style.zIndex = String(1000 - Math.abs(raw));
+
+                        if (raw === 0) div.classList.add('active'); else div.classList.remove('active');
+                    }
+
+                    Array.from(cylinder.children).forEach(el => {
+                        if (!keep.has(String(el.dataset.idx))) el.remove();
+                    });
+                }
+
+                function prev() {
+                    activeIdx = (activeIdx - 1 + itemCount) % itemCount;
+                    renderCylinder();
+                }
+                function next() {
+                    activeIdx = (activeIdx + 1) % itemCount;
+                    renderCylinder();
+                }
+
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                if (prevBtn) prevBtn.addEventListener('click', prev);
+                if (nextBtn) nextBtn.addEventListener('click', next);
+
+                window.addEventListener('keydown', e => {
+                    if (e.key === 'ArrowUp') prev();
+                    if (e.key === 'ArrowDown') next();
+                });
+
+                // touch / swipe handlers for mobile (vertical swipe)
+                (function addSwipe() {
+                    const container = document.querySelector('.cylinder-container');
+                    if (!container) return;
+                    let startY = null;
+                    let startX = null;
+                    const threshold = 30; // px
+                    container.addEventListener('touchstart', e => {
+                        const t = e.changedTouches[0];
+                        startY = t.clientY; startX = t.clientX;
+                    }, { passive: true });
+                    container.addEventListener('touchend', e => {
+                        const t = e.changedTouches[0];
+                        if (startY === null) return;
+                        const dy = t.clientY - startY;
+                        const dx = t.clientX - startX;
+                        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > threshold) {
+                            if (dy < 0) next(); else prev();
+                        }
+                        startY = null; startX = null;
+                    }, { passive: true });
+                })();
+
+                renderCylinder();
+            })();
+        });
+    </script>
+</body>
+
+</html>
